@@ -2,3 +2,5 @@ dist/
 generated-docs/
 node_modules/
 npm-debug.log
+.history
+.vscode

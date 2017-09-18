@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 var Promise = require('es6-promise').Promise;
 var chai = require('chai');
-var request = require('superagent');
+// var request = require('superagent');
+var fetch = require('../src/fetch');
 var downloadRequest = require('../src/download-request');
 var sinon = require('sinon');
 
@@ -28,14 +29,13 @@ describe('downloadRequest', function () {
       parse: function () {},
       proxy: function () {}
     };
-    postStub = sinon.stub(request, 'post').returns(stubRequest);
+    postStub = sinon.spy(fetch.interface, 'fetch');
     endStub = sinon.stub(stubRequest, 'end').returns(stubRequest);
     onStub = sinon.stub(stubRequest, 'on').returns(stubRequest);
     setStub = sinon.stub(stubRequest, 'set').returns(stubRequest);
     typeStub = sinon.stub(stubRequest, 'type').returns(stubRequest);
     bufferStub = sinon.stub(stubRequest, 'buffer').returns(stubRequest);
     parseStub = sinon.stub(stubRequest, 'parse').returns(stubRequest);
-    proxyStub = sinon.stub(stubRequest, 'proxy').returns(stubRequest);
   });
 
   afterEach(function () {
@@ -63,42 +63,26 @@ describe('downloadRequest', function () {
 
   it('sets the authorization header', function () {
     downloadRequest('sharing/create_shared_link', { foo: 'bar' }, 'user', 'content', 'atoken');
-    assert(setStub.calledTwice);
-    assert.equal('Authorization', setStub.firstCall.args[0]);
-    assert.equal('Bearer atoken', setStub.firstCall.args[1]);
+    var options = postStub.firstCall.args[1];
+    assert.equal(options.headers.Authorization, 'Bearer atoken');
   });
 
   it('sets the authorization and select user headers if selectUser set', function () {
     downloadRequest('sharing/create_shared_link', { foo: 'bar' }, 'user', 'content', 'atoken', 'selectedUserId');
-    assert(setStub.calledThrice);
-    assert.equal('Authorization', setStub.firstCall.args[0]);
-    assert.equal('Bearer atoken', setStub.firstCall.args[1]);
-    assert.equal('Dropbox-API-Select-User', setStub.thirdCall.args[0]);
-    assert.equal('selectedUserId', setStub.thirdCall.args[1]);
+    var options = postStub.firstCall.args[1];
+    assert.equal(options.headers.Authorization, 'Bearer atoken');
+    assert.equal(options.headers['Dropbox-API-Select-User'], 'selectedUserId');
   });
 
   it('sets the Dropbox-API-Arg header', function () {
     downloadRequest('sharing/create_shared_link', { foo: 'bar' }, 'user', 'content', 'atoken');
-    assert(setStub.calledTwice);
-    assert.equal('Dropbox-API-Arg', setStub.secondCall.args[0]);
-    assert.equal(JSON.stringify({ foo: 'bar' }), setStub.secondCall.args[1]);
+    var options = postStub.firstCall.args[1];
+    assert.equal(options.headers['Dropbox-API-Arg'], JSON.stringify({ foo: 'bar' }));
   });
 
   it('escapes special characters in the Dropbox-API-Arg header', function () {
     downloadRequest('sharing/create_shared_link', { foo: 'bar单bazá' }, 'user', 'content', 'atoken');
-    assert(setStub.calledTwice);
-    assert.equal('Dropbox-API-Arg', setStub.secondCall.args[0]);
-    assert.equal('{"foo":"bar\\u5355baz\\u00e1"}', setStub.secondCall.args[1]);
-  });
-
-  it('sets the response handler function', function () {
-    downloadRequest('sharing/create_shared_link', { foo: 'bar' }, 'user', 'content', 'atoken');
-    assert(endStub.calledOnce);
-    assert.isFunction(endStub.firstCall.args[0]);
-  });
-
-  it('sets a proxy', function () {
-    downloadRequest('sharing/get_shared_link_file', { foo: 'bar' }, 'user', 'content', 'atoken', 'selectedUserId', 'proxy');
-    assert(proxyStub.calledOnce);
+    var options = postStub.firstCall.args[1];
+    assert.equal(options.headers['Dropbox-API-Arg'], '{"foo":"bar\\u5355baz\\u00e1"}');
   });
 });
