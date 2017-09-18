@@ -1,63 +1,38 @@
-var request = require('superagent');
 var Promise = require('es6-promise').Promise;
 var getBaseURL = require('./get-base-url');
-
-require('superagent-proxy')(request);
+var fetch = require('./fetch');
 
 // This doesn't match what was spec'd in paper doc yet
-var buildCustomError = function (error, response) {
-  var err;
-  if (response) {
-    try {
-      err = JSON.parse(response.text);
-    } catch (e) {
-      err = response.text;
-    }
-  }
+var buildCustomError = function (error) {
   return {
     status: error.status,
-    error: err || error,
-    response: response
+    error: error
   };
 };
 
-var rpcRequest = function (path, body, auth, host, accessToken, selectUser, proxy) {
+var rpcRequest = function (path, body, auth, host, accessToken, selectUser) {
   var promiseFunction = function (resolve, reject) {
-    var apiRequest;
-
-    function success(data) {
-      if (resolve) {
-        resolve(data);
-      }
-    }
-
-    function failure(error) {
-      if (reject) {
-        reject(error);
-      }
-    }
-
-    function responseHandler(error, response) {
-      if (error) {
-        failure(buildCustomError(error, response));
-      } else {
-        success(response.body);
-      }
-    }
-
     // The API expects null to be passed for endpoints that dont accept any
     // parameters
     if (!body) {
       body = null;
     }
 
-    apiRequest = request.post(getBaseURL(host) + path)
-      .type('application/json');
+    var fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: body
+    };
+
+    // apiRequest = request.post(getBaseURL(host) + path)
+    //   .type('application/json');
 
     switch (auth) {
       case 'team':
       case 'user':
-        apiRequest.set('Authorization', 'Bearer ' + accessToken);
+        fetchOptions.headers.Authorization = 'Bearer ' + accessToken;
         break;
       case 'noauth':
         break;
@@ -66,15 +41,29 @@ var rpcRequest = function (path, body, auth, host, accessToken, selectUser, prox
     }
 
     if (selectUser) {
-      apiRequest = apiRequest.set('Dropbox-API-Select-User', selectUser);
+      fetchOptions.headers['Dropbox-API-Select-User'] = selectUser;
     }
 
-    if (proxy) {
-      apiRequest.proxy(proxy);
-    }
+    fetch(getBaseURL(host) + path, fetchOptions)
+      .then(function (res) {
+        if (!res.ok) {
+          var err = new Error('Request failed');
+          err.status = res.status;
+          throw err;
+        }
+      })
+      .then(function (res) {
+        return res.text();
+      })
+      .then(function (result) {
+        resolve(result);
+      })
+      .catch(function (err) {
+        reject(buildCustomError(err));
+      });
 
-    apiRequest.send(body)
-      .end(responseHandler);
+    // apiRequest.send(body)
+    //   .end(responseHandler);
   };
 
   return new Promise(promiseFunction);
