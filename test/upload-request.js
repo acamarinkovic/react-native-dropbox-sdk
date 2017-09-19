@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 var Promise = require('es6-promise').Promise;
 var chai = require('chai');
-// var request = require('superagent');
 var fetch = require('../src/fetch');
 var uploadRequest = require('../src/upload-request');
 var sinon = require('sinon');
@@ -9,28 +8,9 @@ var sinon = require('sinon');
 var assert = chai.assert;
 
 describe('uploadRequest', function () {
-  // var stubRequest;
   var fetchStub;
-  // var endStub;
-  // var setStub;
-  // var typeStub;
-  // var sendStub;
-  // var proxyStub;
 
   beforeEach(function () {
-    // stubRequest = {
-    //   end: function () {},
-    //   send: function () {},
-    //   set: function () {},
-    //   type: function () {},
-    //   proxy: function () {}
-    // };
-    // fetchStub = sinon.stub(request, 'post').returns(stubRequest);
-    // endStub = sinon.stub(stubRequest, 'end').returns(stubRequest);
-    // setStub = sinon.stub(stubRequest, 'set').returns(stubRequest);
-    // typeStub = sinon.stub(stubRequest, 'type').returns(stubRequest);
-    // sendStub = sinon.stub(stubRequest, 'send').returns(stubRequest);
-    // proxyStub = sinon.stub(stubRequest, 'proxy').returns(stubRequest);
     fetchStub = sinon.spy(fetch.interface, 'fetch');
   });
 
