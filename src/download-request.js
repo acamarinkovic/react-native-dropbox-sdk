@@ -40,17 +40,18 @@ downloadRequest = function (path, args, auth, host, accessToken, selectUser) {
           err.status = res.status;
           throw err;
         }
+        return res;
       })
       .then(function (res) {
         return Promise.all([
-          res.buffer(),
+          res.buffer && res.buffer() || res.blob(),
           Promise.resolve(res.headers)
         ]);
       })
       .then(function (res) {
         var output = res[0];
         var headers = res[1];
-        var data = JSON.parse(headers['dropbox-api-result']);
+        var data = JSON.parse(headers.get('dropbox-api-result'));
         data.fileBinary = output;
         resolve(data);
       })
