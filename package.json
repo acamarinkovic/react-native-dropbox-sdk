@@ -1,6 +1,6 @@
 {
   "name": "react-native-dropbox-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dropboxVersion": "2.5.7",
   "description": "The Dropbox JavaScript SDK is a lightweight, promise based interface to the Dropbox v2 API that works in both nodejs and browser environments.",
   "main": "src/index.js",
@@ -33,9 +33,9 @@
     "sdk",
     "client"
   ],
-  "repository": "https://github.com/dropbox/dropbox-sdk-js",
-  "bugs": "https://github.com/dropbox/dropbox-sdk-js/issues",
-  "author": "Riley Tomasek",
+  "repository": "https://github.com/perry-mitchell/react-native-dropbox-sdk",
+  "bugs": "https://github.com/perry-mitchell/react-native-dropbox-sdk/issues",
+  "author": "Perry Mitchell <perry@perrymitcell.net>",
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^2.7.0",

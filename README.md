@@ -4,7 +4,7 @@ This project is a simple fork of the official [Dropbox SDK for JavaScript](https
 
 ## Installation
 
-_TBA_.
+Simply install by running `npm install react-native-dropbox-sdk --save`.
 
 ## Changes
 
