@@ -29,7 +29,7 @@ describe('downloadRequest', function () {
       parse: function () {},
       proxy: function () {}
     };
-    postStub = sinon.spy(fetch.interface, 'fetch');
+    postStub = sinon.spy(fetch.harness, 'fetch');
     endStub = sinon.stub(stubRequest, 'end').returns(stubRequest);
     onStub = sinon.stub(stubRequest, 'on').returns(stubRequest);
     setStub = sinon.stub(stubRequest, 'set').returns(stubRequest);

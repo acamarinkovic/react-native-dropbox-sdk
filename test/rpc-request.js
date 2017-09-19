@@ -12,11 +12,11 @@ describe('rpcRequest', function () {
   var postStub;
 
   beforeEach(function () {
-    postStub = sinon.spy(fetch.interface, 'fetch');
+    postStub = sinon.spy(fetch.harness, 'fetch');
   });
 
   afterEach(function () {
-    fetch.interface.fetch.restore();
+    fetch.harness.fetch.restore();
   });
 
   it('returns a promise', function () {

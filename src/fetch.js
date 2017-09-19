@@ -1,14 +1,14 @@
 var nodeFetch = require('node-fetch');
 
-var interface = {
+var harness = {
   fetch: nodeFetch
 };
 
 function fetch() {
   var args = Array.prototype.slice.call(arguments);
-  return interface.fetch.apply(null, args);
+  return harness.fetch.apply(null, args);
 }
 
-fetch.interface = interface;
+fetch.harness = harness;
 
 module.exports = fetch;

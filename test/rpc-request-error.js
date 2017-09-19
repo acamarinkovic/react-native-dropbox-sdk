@@ -9,7 +9,7 @@ var assert = chai.assert;
 
 describe('rpcRequest error', function () {
   beforeEach(function () {
-    this.fetchStub = sinon.stub(fetch.interface, 'fetch');
+    this.fetchStub = sinon.stub(fetch.harness, 'fetch');
   });
 
   afterEach(function () {

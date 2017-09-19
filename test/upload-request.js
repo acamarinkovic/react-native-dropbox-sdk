@@ -11,7 +11,7 @@ describe('uploadRequest', function () {
   var fetchStub;
 
   beforeEach(function () {
-    fetchStub = sinon.spy(fetch.interface, 'fetch');
+    fetchStub = sinon.spy(fetch.harness, 'fetch');
   });
 
   afterEach(function () {
