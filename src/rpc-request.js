@@ -23,7 +23,7 @@ var rpcRequest = function (path, body, auth, host, accessToken, selectUser) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: body
+      body: typeof body !== 'string' ? JSON.stringify(body) : body
     };
 
     // apiRequest = request.post(getBaseURL(host) + path)
@@ -51,9 +51,10 @@ var rpcRequest = function (path, body, auth, host, accessToken, selectUser) {
           err.status = res.status;
           throw err;
         }
+        return res;
       })
       .then(function (res) {
-        return res.text();
+        return res.json();
       })
       .then(function (result) {
         resolve(result);
@@ -61,9 +62,6 @@ var rpcRequest = function (path, body, auth, host, accessToken, selectUser) {
       .catch(function (err) {
         reject(buildCustomError(err));
       });
-
-    // apiRequest.send(body)
-    //   .end(responseHandler);
   };
 
   return new Promise(promiseFunction);
