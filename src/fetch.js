@@ -1,11 +1,16 @@
-var fetchPolyfill = require('./fetch-polyfill');
+var fetchPolyfill = require('node-fetch');
+
+var theGlobalObject = typeof global !== undefined ? global : window;
 
 function getFetchMethod() {
+  if (theGlobalObject) {
+    if (typeof theGlobalObject.rnFetch === 'function') {
+      return theGlobalObject.rnFetch;
+    } else if (typeof theGlobalObject.fetch === 'function') {
+      return theGlobalObject.fetch;
+    }
+  }
   return fetchPolyfill;
-  // var glb = typeof global !== 'undefined' ? global : window;
-  // return typeof glb !== 'undefined' && typeof glb.fetch === 'function' ?
-  //   glb.fetch :
-  //   fetchPolyfill;
 }
 
 var harness = {

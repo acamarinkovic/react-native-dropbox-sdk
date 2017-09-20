@@ -13,6 +13,7 @@ Below is a list of features where this project differs from the original:
  * `superagent` has been removed in favour of the native `fetch` command.
  * Proxies are no longer supported: download/upload requests have this parameter removed.
  * Returned error objects contain only `error` and `status` properties, not `response`.
+ * Support for global `fetch` override by using `global.rnFetch`.
 
 ## License
 
