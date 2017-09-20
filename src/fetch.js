@@ -1,7 +1,14 @@
 var nodeFetch = require('node-fetch');
 
+function getFetchMethod() {
+  var glb = typeof global !== 'undefined' ? global : window;
+  return typeof glb !== 'undefined' && typeof glb.fetch === 'function' ?
+    glb.fetch :
+    nodeFetch;
+}
+
 var harness = {
-  fetch: nodeFetch
+  fetch: getFetchMethod()
 };
 
 function fetch() {
