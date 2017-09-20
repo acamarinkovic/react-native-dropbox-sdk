@@ -54,12 +54,12 @@ describe('rpcRequest', function () {
   it('sets the request body', function () {
     rpcRequest('files/list', { foo: 'bar' }, 'user', 'api', 'atoken');
     var options = postStub.firstCall.args[1];
-    assert.deepEqual(options.body, { foo: 'bar' });
+    assert.equal(options.body, '{"foo":"bar"}');
   });
 
   it('sets the request body to null if body isn\'t passed', function () {
     rpcRequest('files/list', undefined, 'user', 'api', 'atoken');
     var options = postStub.firstCall.args[1];
-    assert.deepEqual(options.body, null);
+    assert.deepEqual(options.body, 'null');
   });
 });

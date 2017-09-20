@@ -1,10 +1,11 @@
-var nodeFetch = require('node-fetch');
+var fetchPolyfill = require('./fetch-polyfill');
 
 function getFetchMethod() {
-  var glb = typeof global !== 'undefined' ? global : window;
-  return typeof glb !== 'undefined' && typeof glb.fetch === 'function' ?
-    glb.fetch :
-    nodeFetch;
+  return fetchPolyfill;
+  // var glb = typeof global !== 'undefined' ? global : window;
+  // return typeof glb !== 'undefined' && typeof glb.fetch === 'function' ?
+  //   glb.fetch :
+  //   fetchPolyfill;
 }
 
 var harness = {

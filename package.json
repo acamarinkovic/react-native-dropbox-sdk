@@ -1,6 +1,6 @@
 {
   "name": "react-native-dropbox-sdk",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "dropboxVersion": "2.5.7",
   "description": "The Dropbox JavaScript SDK is a lightweight, promise based interface to the Dropbox v2 API that works in both nodejs and browser environments.",
   "main": "src/index.js",
@@ -54,7 +54,6 @@
     "webpack-dev-middleware": "^1.6.1"
   },
   "dependencies": {
-    "es6-promise": "^4.1.1",
-    "node-fetch": "^1.7.3"
+    "es6-promise": "^4.1.1"
   }
 }
