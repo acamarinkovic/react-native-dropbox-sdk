@@ -2,6 +2,8 @@
 
 This project is a simple fork of the official [Dropbox SDK for JavaScript](https://github.com/dropbox/dropbox-sdk-js), made to work in React Native environments. Please see the original repository for documentation and all other resources.
 
+## DEPRECATED: Not currently maintained
+
 ## Installation
 
 Simply install by running `npm install react-native-dropbox-sdk --save`.
